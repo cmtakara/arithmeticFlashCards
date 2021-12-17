@@ -24,33 +24,92 @@
     <div class="container">
         Overall container
 
-        <div class="intro">Hello! Let's practice some math!!!</div>
+        <div class="intro">Hello! Let's practice some math!!! Make your choices and select submit to start practice.</div>
         
         <div class="content">
             <div class='problems'>
                 Problems
+                <!-- all need an id in order for the correct number to go in (could access the class array but already need two to have ids) -->
+                <div class="num" id='first-in'>x</div>
+                <!-- I think I will add an id to the second one so that it includes the operation -->
+                <div class="num" id='second-in'>x</div>
+                <!-- include an id for the number the user is inputting -->
+
+<!-- hide this  -->
+                <div>
+                    <label for="user-answer">answer:</label>
+                    <input type="number" class='num' id="user-answer">
+                </div>
+
+                <div class="num" id='answer'>x</div>
+<!-- hide this  -->
+                <div id="answer-button">
+                    <button class='checkAnswer'>Check Answer</button>
+                </div>
+                
             </div>
 
             <div class='inputs'>
                 Inputs
+                <form>
+                    <div>
+                        <label for="fname">First Name:</label>
+                        <input type="text" id='fname'>
+                    </div>
+    
+                    <div>
+                        <label for="operation">Choose your operation:</label>
+                        <select id="operation" name="operation">
+                            <option value="addition">Addition (+)</option>
+                            <option value="subtraction">Subtraction (-)</option>
+                            <option value="multiplication">multiplication (x)</option>
+                            <option value="division">Division (/)</option>
+                            <option value="fraction">Fraction Reduction</option>
+                        </select>
+                        <br>
+                        <label for="number-range">Choose your difficulty level:</label>
+                        <select id="number-range" name="number-range">
+                            <option value="toFive">0 - 5</option>
+                            <option value="toNine">0 - 9</option>
+                            <option value="toFifteen">0 - 15</option>
+                            <option value="toTwenty">0 - 20</option>
+                            <option value="twoDigit">two digit (no borrow or carry)</option>
+                        </select>
+                        <br>
+                        <label for="time-per-problem">Choose your difficulty level:</label>
+                        <select id="time-per-problem" name="time-per-problem">
+                            <option value="practice"> untimed practice </option>
+                            <option value="twoS">2 seconds</option>
+                            <option value="fourS">4 seconds</option>
+                            <option value="sixS">6 seconds</option>
+                        </select>
+                    </div>
+    
+                    <div id='submit-button'>
+                        <!--<button onclick='game.checkElement(event)'>Submit</button>-->
+                        <button class='userInput' onclick='startPractice(event)'>Submit</button>
+                    </div>
+                        <!-- right now this doesn't purposely do anything, but it does uninitentionally do what I want-->
+                    <div class ="hide" id="reset-button">
+                        <button class="resetInput">Start Over</button>
+                    </div>
+                </form>
             </div>
         </div>
 
         <div class="results">
-            <div class="playerResults">
-                Player 1 results
+            <div class="playerResults" id='current-player'>
+                Current player
             </div>
             <div class="playerResults">
-                Player 2 results
+                Past results
             </div>
         </div>
     
     </div>
 </body>
 
-<!-- This will have a script -->
-<!-- It will be named as below, but that is not created as of 12/16 -->
-<!--
-<script src="./js/flashCards.js"></script>
--->
+<!-- The script was created on 12/17 -->
+<script src="../js/flashCardScript.js"></script>
+
 </html>

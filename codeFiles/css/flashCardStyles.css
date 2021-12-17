@@ -4,6 +4,11 @@
     background-color: #212F45;
     font-family: 'Raleway', sans-serif;
     color: whitesmoke;
+    border: black solid 1px;
+}
+
+.hide {
+    display: none;
 }
 
 /* nav */
@@ -13,7 +18,7 @@
 .container {
     display: flex;
     flex-direction: column;
-
+    margin: 5px;
 }
 
 /* intro */
@@ -32,20 +37,32 @@
 .content {
     display: flex;
     flex-direction: row;
-
+    margin: 5px;
+    justify-content: space-evenly;
 }
 
 /* problems */
 .problems {
-    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40vw;
     min-height: 20vh;
     background-color: #5b90ad;
     color: black;
 }
 
+/* inside the problems are numbers */
+.num {
+    width: 80px;
+    height: 50px;
+    font-size: 30px;
+    text-align: right;
+}
+
 /* input */
 .inputs {
-    width: 50vw;
+    width: 40vw;
     min-height: 20vh;
     background-color: #5b90ad;
     color: black;
@@ -55,10 +72,12 @@
 .results {
     display: flex;
     flex-direction: row;
+    margin: 5px;
+    justify-content: space-evenly;
 }
 
 /* playerResults */
 .playerResults {
-    width: 50vw;
+    width: 30vw;
     min-height: 20vh;
 }
