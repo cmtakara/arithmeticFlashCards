@@ -1,0 +1,64 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    background-color: #212F45;
+    font-family: 'Raleway', sans-serif;
+    color: whitesmoke;
+}
+
+/* nav */
+
+/* container */
+/* intro and content are in a column */
+.container {
+    display: flex;
+    flex-direction: column;
+
+}
+
+/* intro */
+.intro {
+    height: 10vh;
+    background-color: #1B3A4B;
+    font-size: 14pt;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    
+}
+
+/* content */
+/* inside of content, problems and input are in a row */
+.content {
+    display: flex;
+    flex-direction: row;
+
+}
+
+/* problems */
+.problems {
+    width: 50vw;
+    min-height: 20vh;
+    background-color: #5b90ad;
+    color: black;
+}
+
+/* input */
+.inputs {
+    width: 50vw;
+    min-height: 20vh;
+    background-color: #5b90ad;
+    color: black;
+}
+
+/* results */
+.results {
+    display: flex;
+    flex-direction: row;
+}
+
+/* playerResults */
+.playerResults {
+    width: 50vw;
+    min-height: 20vh;
+}
