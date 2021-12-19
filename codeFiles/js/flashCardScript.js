@@ -1,12 +1,16 @@
 //
 const currPlayer = document.querySelector('#current-player');
+
 const firstInput = document.querySelector('#first-in');
 const secondInput = document.querySelector('#second-in');
 const answer = document.querySelector('#answer');
+
+const answerBox = document.querySelector('#answer-box');
+
+// buttons - above are grouped by location, but these interact with all areas and can't interrupt other actions
 const submitButton = document.querySelector('#submit-button');
 const resetButton = document.querySelector('#reset-button');
 const answerButton = document.querySelector('#answer-button');
-// const answer = document.querySelector('#answer');
 
 
 // inputs
@@ -15,55 +19,91 @@ const operation = document.querySelector('#operation');
 const numRange = document.querySelector('#number-range');
 const timePerProblem = document.querySelector('#time-per-problem');
 
+const userAnswer = document.querySelector('#user-answer');
 
+//player array
+const playerArray = [];
+
+// creating an object that can hold the game information 
+// *** Needs to be updated and update the startPractice accordingly
+class Player {
+    // from user inputs
+    constructor (fname, operation, numRange, timePerProblem) {
+        console.log('in constructor');
+        this.fname = fname;
+        this.operation = operation;
+        this.numRange = numRange;
+        this.timePerProblem = timePerProblem;
+        this.numCorrect = 0;
+        this.numAttempts = 0;
+        this.currAnswer = '';
+        this.correctAnswer = '';
+    }
+
+}
+
+// Do I want a score class? and then an array of scores?
+// I want scores.operation.range.highScore[1..10]
 
 // startPractice executes on submission of the options (submit button onclick)
-// it calls operation functions
+// it calls operation functions (addition, subtraction, multiplication, division, fraction)
 function startPractice (event) {
     event.preventDefault ();
-    console.log('starting now');
+    console.log('starting practice now');
     // console.log(fName.value, operation.value, numRange.value, timePerProblem.value);
-
-    submitButton.classList.toggle('hide');
-    resetButton.classList.toggle('hide');
-    // answerButton.classList.toggle('hide');
 
     var currName = fName.value;
     if (currName === '') {
         currName = 'anonymous';
         //console.log('anonymous');
     }
-    let op = operation.value;
 
-    let playerString = currName + ' you are in ' + op + ' with a range of ' + numRange.value + ' and ' + timePerProblem.value + ' for each problem'
+    const newPlayer = new Player(currName, operation.value, numRange.value, timePerProblem.value);
+    console.log(newPlayer);
+    playerArray.push(newPlayer)
+
+    submitButton.classList.toggle('hide');
+    resetButton.classList.toggle('hide');
+    // answerButton.classList.toggle('hide');
+    answer.classList.toggle('hide');
+
+
+    let op = newPlayer.operation;
+
+    let playerString = newPlayer.fname + ' you are in ' + op + ' with a range of ' + newPlayer.numRange +
+    ' and ' + newPlayer.timePerProblem + ' for each problem';
+
+//**TODO LIST */
+//currently here with updating to include player class - finish including player object, then include these as methods in object
+//add method checkOp - because then it can be called from startPractice and checkAnswer
 
 
     //operation is going to lead to different functions where numRange and timePerProblem are parameters
     switch (op) {
         case "addition":
-            console.log('in addition, name, range, and time are: ', currName, numRange.value, timePerProblem.value) 
+            // console.log('in addition, name, range, and time are: ', currName, numRange.value, timePerProblem.value) 
             currPlayer.innerHTML = playerString;    
-            addition(numRange.value, timePerProblem);
+            addition(newPlayer);
             break;
         case "subtraction":
-            console.log('in subtraction, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
+            // console.log('in subtraction, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
             currPlayer.innerHTML = 'Sorry, this isn"t working yet';    
             break;
         case "multiplication":
-            console.log('in multiplication, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
+            // console.log('in multiplication, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
             currPlayer.innerHTML = 'Sorry, this isn"t working yet';    
             break;
         case "division":
-            console.log('in division, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
+            // console.log('in division, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
             currPlayer.innerHTML = 'Sorry, this isn"t working yet';    
             break;
         case "fraction":
-            console.log('in fractions, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
+            // console.log('in fractions, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
             currPlayer.innerHTML = 'Sorry, this isn"t working yet';    
             break;
         // because this is coming from the drop down selection, there should be nothing that makes it this far.
         default: 
-            console.log('Something went wrong choosing an operation, try again')
+            // console.log('Something went wrong choosing an operation, try again')
             break;
 
 
@@ -71,13 +111,17 @@ function startPractice (event) {
 
 }
 
+
+
 // addition is called by startPractice
 // addition calculate addends, display the numbers, find the answer and get an input from the user
 // it calls functions to return the max value with a parameter of the range string
 
-function addition (range, times) {
+function addition (newPlayer) {
 // initially, this is done without the time constraints.
-    
+    let range = newPlayer.numRange;
+    let times = newPlayer.timePerProblem;    
+
     //hide the answer text div and show the answer input div
     // answer.classList.toggle('hide');
     // calculate addends (integers in range)
@@ -106,12 +150,78 @@ function addition (range, times) {
     firstInput.innerHTML = num1;
     secondInput.innerHTML = '+ ' + num2;
     answer.innerHTML = num1 + num2;
-
+    newPlayer.correctAnswer = num1 + num2;
     // wait for user input
 
     // check answer
 
 };
+
+
+// answerCheck executes on user action (checkAnswer button onclick)
+// it calls ...
+function answerCheck (event) {
+    event.preventDefault ();
+    console.log('checking answer now');
+    // console.log(playerArray.length);
+    // console.log('player array [0]', playerArray[0]);
+    // console.log('player array ', playerArray);
+    
+    let newPlayer = playerArray[playerArray.length-1];
+    // console.log('new player is ', newPlayer);
+    newPlayer.currAnswer = userAnswer.value;
+    console.log('newplayer current answer is: ', newPlayer.currAnswer);
+    // console.log('user answer is: ', userAnswer.value);
+    correctAnswer = newPlayer.correctAnswer;
+    console.log('correct answer is: ', correctAnswer);
+    console.log('comparison of user answer and correct answer is: ', correctAnswer == newPlayer.currAnswer);
+
+    if (correctAnswer == newPlayer.currAnswer) {
+        //if the answer is correct, increment numCorrect      
+        newPlayer.numCorrect++;
+    }
+    // increment numAttempts
+    // set both currAnswer and correctAnser to ''
+    newPlayer.numAttempts++;
+    newPlayer.currAnswer = '';
+    newPlayer.correctAnswer = '';
+    userAnswer.value = '';
+
+
+    updateString = newPlayer.fname + ', you have ' + newPlayer.numCorrect +
+    ' correct out of ' + newPlayer.numAttempts + ' tries';  
+    currPlayer.innerHTML = updateString;
+
+    if (newPlayer.numAttempts < 10) {
+        //try again
+        console.log(newPlayer.operation);
+        //this allows you to call the function with the name of the string within the [] and () parameters
+        window[newPlayer.operation](newPlayer);
+
+    }
+    else {
+        //practice is done 
+        // put a string in html saying practice is done, you got x/10 correct
+        updateString += '<br> You can try again by pressing start over';
+        currPlayer.innerHTML = updateString;
+        //hide answer button
+        answerButton.classList.toggle('hide');
+        //hide answer box
+        answerBox.classList.toggle('hide');
+
+    }
+
+    
+        // this.numCorrect = 0;
+        // this.numAttempts = 0;
+        // this.currAnswer = '';
+        // this.correctAnswer = '';
+}
+
+
+// ==========================================================================
+// ==========================    HELPER FUNCTIONS   =========================
+// ==========================================================================
 
 function rangeToMax (range) {
     console.log('changing range to max');

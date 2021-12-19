@@ -36,7 +36,7 @@
                 <!-- include an id for the number the user is inputting -->
 
 <!-- hide this  -->
-                <div>
+                <div id='answer-box'>
                     <label for="user-answer">answer:</label>
                     <input type="number" class='num' id="user-answer">
                 </div>
@@ -44,7 +44,7 @@
                 <div class="num" id='answer'>x</div>
 <!-- hide this  -->
                 <div id="answer-button">
-                    <button class='checkAnswer'>Check Answer</button>
+                    <button onclick="answerCheck(event)" class='checkAnswer'>Check Answer</button>
                 </div>
                 
             </div>
