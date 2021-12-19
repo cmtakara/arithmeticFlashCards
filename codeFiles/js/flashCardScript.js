@@ -7,10 +7,29 @@ const answer = document.querySelector('#answer');
 
 const answerBox = document.querySelector('#answer-box');
 
+var inCheckAnswer = false;
+
+//from w3schools trigger button on enter
+answerBox.addEventListener("keyup", function(event){
+    console.log('in event listener')
+    console.log('keycode is: ', event.keyCode)
+    //number 13 is enter
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        console.log('in if');
+        if (!inCheckAnswer) {
+            answerCheck(event);
+        }
+    }
+}); 
+
+
 // buttons - above are grouped by location, but these interact with all areas and can't interrupt other actions
 const submitButton = document.querySelector('#submit-button');
 const resetButton = document.querySelector('#reset-button');
 const answerButton = document.querySelector('#answer-button');
+const nextButton = document.querySelector('#next-button');
+
 
 
 // inputs
@@ -48,6 +67,7 @@ class Player {
 // startPractice executes on submission of the options (submit button onclick)
 // it calls operation functions (addition, subtraction, multiplication, division, fraction)
 function startPractice (event) {
+    inCheckAnswer = false;
     event.preventDefault ();
     console.log('starting practice now');
     // console.log(fName.value, operation.value, numRange.value, timePerProblem.value);
@@ -66,6 +86,8 @@ function startPractice (event) {
     resetButton.classList.toggle('hide');
     // answerButton.classList.toggle('hide');
     answer.classList.toggle('hide');
+    userAnswer.style.backgroundColor = 'white'
+    userAnswer.style.color = 'black'
 
 
     let op = newPlayer.operation;
@@ -161,6 +183,8 @@ function addition (newPlayer) {
 // answerCheck executes on user action (checkAnswer button onclick)
 // it calls ...
 function answerCheck (event) {
+    inCheckAnswer = true;
+    answerButton.classList.add('hide');
     event.preventDefault ();
     console.log('checking answer now');
     // console.log(playerArray.length);
@@ -179,25 +203,30 @@ function answerCheck (event) {
     if (correctAnswer == newPlayer.currAnswer) {
         //if the answer is correct, increment numCorrect      
         newPlayer.numCorrect++;
+        userAnswer.style.backgroundColor = 'green'
+        userAnswer.style.color = 'black'
+        updateString = "CORRECT!! <br>";
+        currPlayer.innerHTML = updateString;
+    }
+    else {
+        userAnswer.style.backgroundColor = 'red'
+        userAnswer.value = correctAnswer;
+        updateString = "That was not the right answer <br> The correct answer is shown above <br>";
+        currPlayer.innerHTML = updateString;
     }
     // increment numAttempts
-    // set both currAnswer and correctAnser to ''
+    // set both currAnswer and correctAnser to '' - moved this to nextProblem so that user can see the correct answer
     newPlayer.numAttempts++;
-    newPlayer.currAnswer = '';
-    newPlayer.correctAnswer = '';
-    userAnswer.value = '';
 
 
-    updateString = newPlayer.fname + ', you have ' + newPlayer.numCorrect +
+    updateString += newPlayer.fname + ', you have ' + newPlayer.numCorrect +
     ' correct out of ' + newPlayer.numAttempts + ' tries';  
     currPlayer.innerHTML = updateString;
 
     if (newPlayer.numAttempts < 10) {
         //try again
-        console.log(newPlayer.operation);
-        //this allows you to call the function with the name of the string within the [] and () parameters
-        window[newPlayer.operation](newPlayer);
-
+        inCheckAnswer = false;
+        nextButton.classList.remove('hide');
     }
     else {
         //practice is done 
@@ -205,19 +234,35 @@ function answerCheck (event) {
         updateString += '<br> You can try again by pressing start over';
         currPlayer.innerHTML = updateString;
         //hide answer button
-        answerButton.classList.toggle('hide');
+        answerButton.classList.add('hide');
         //hide answer box
         answerBox.classList.toggle('hide');
+        resetButton.style.backgroundColor = 'yellow'
 
     }
 
-    
-        // this.numCorrect = 0;
-        // this.numAttempts = 0;
-        // this.currAnswer = '';
-        // this.correctAnswer = '';
 }
 
+function nextProblem(event) {
+    answerButton.classList.remove('hide');
+    console.log('moving to the next problem');        
+    let newPlayer = playerArray[playerArray.length-1];
+    // console.log('new player is ', newPlayer);
+
+    newPlayer.currAnswer = '';
+    newPlayer.correctAnswer = '';
+    userAnswer.value = '';
+    userAnswer.style.backgroundColor = 'white'
+    updateString = 'GOOD LUCK';
+    currPlayer.innerHTML = updateString;
+
+    //already checking if there are less than 10 attempts.  won't show next button if there are 10
+    console.log(newPlayer.operation);
+    //this allows you to call the function with the name of the string within the [] and () parameters
+    window[newPlayer.operation](newPlayer);
+    nextButton.classList.add('hide');
+
+}
 
 // ==========================================================================
 // ==========================    HELPER FUNCTIONS   =========================
