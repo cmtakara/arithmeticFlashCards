@@ -1,5 +1,6 @@
 //
 const currPlayer = document.querySelector('#current-player');
+const prevPlayer = document.querySelector('#previous-player');
 
 const firstInput = document.querySelector('#first-in');
 const secondInput = document.querySelector('#second-in');
@@ -8,6 +9,8 @@ const answer = document.querySelector('#answer');
 const answerBox = document.querySelector('#answer-box');
 
 var inCheckAnswer = false;
+var timer;
+var timeLeft;
 
 //from w3schools trigger button on enter
 answerBox.addEventListener("keyup", function(event){
@@ -42,13 +45,14 @@ const userAnswer = document.querySelector('#user-answer');
 
 //player array
 const playerArray = [];
+const scoreStringArray = [];
 
 // creating an object that can hold the game information 
 // *** Needs to be updated and update the startPractice accordingly
 class Player {
     // from user inputs
     constructor (fname, operation, numRange, timePerProblem) {
-        console.log('in constructor');
+        console.log('in Player constructor');
         this.fname = fname;
         this.operation = operation;
         this.numRange = numRange;
@@ -57,12 +61,59 @@ class Player {
         this.numAttempts = 0;
         this.currAnswer = '';
         this.correctAnswer = '';
+        this.totalTIme = 0;
+
+        switch (this.timePerProblem) {
+            case "twoS":
+                this.timePerProblem = 2;
+                break;
+            case "fourS":
+                this.timePerProblem = 4;
+                break;
+            case "sixS":
+                this.timePerProblem = 6;
+                break;
+            default:
+                this.timePerProblem = 60;
+                break;
+        }
+        
     }
 
 }
 
+// start with a score class that can hold the object, display it, and maybe store and retrieve it
 // Do I want a score class? and then an array of scores?
-// I want scores.operation.range.highScore[1..10]
+// I want scores.operation.range.timeAllowed.highScore[1..10]
+// can map range/difficulty level to an enumeration 
+// also map 2s to 0, 4s to 1, 6s to 2, and 60s to 3
+// so have a by 4 array for each operation - and store the score string in there
+
+// uild up to this one
+// class ScoreStorage {
+//     constructor () {}
+// }
+
+// 0 - 'toFive' 
+// 1 - 'toNine'
+// 2 - 'toFifteen'
+// 3 - 'toTwenty' 
+// 4 - 'twoDigit'
+
+class ScoreString {
+    constructor (fname, numCorr, speed) {
+        this.fname = fname;
+        this.numCorr = numCorr;
+        this.speed = speed;
+    }
+
+    get displayString() {
+        return  this.fname + ' got ' + this.numCorr + ' correct in ' + this.speed + ' seconds'
+    }
+
+
+}
+
 
 // startPractice executes on submission of the options (submit button onclick)
 // it calls operation functions (addition, subtraction, multiplication, division, fraction)
@@ -169,10 +220,15 @@ function addition (newPlayer) {
     // find answer
 
     // display addends
+    timeLeft = Number(newPlayer.timePerProblem); 
+    console.log(newPlayer.timePerProblem);
+
+    console.log(timeLeft);
     firstInput.innerHTML = num1;
     secondInput.innerHTML = '+ ' + num2;
     answer.innerHTML = num1 + num2;
     newPlayer.correctAnswer = num1 + num2;
+    startTimer();
     // wait for user input
 
     // check answer
@@ -183,9 +239,11 @@ function addition (newPlayer) {
 // answerCheck executes on user action (checkAnswer button onclick)
 // it calls ...
 function answerCheck (event) {
+    console.log('in answerCheck');
+    clearInterval(timer);
     inCheckAnswer = true;
     answerButton.classList.add('hide');
-    event.preventDefault ();
+    if (typeof event !== 'undefined') { event.preventDefault ()};
     console.log('checking answer now');
     // console.log(playerArray.length);
     // console.log('player array [0]', playerArray[0]);
@@ -231,6 +289,17 @@ function answerCheck (event) {
     else {
         //practice is done 
         // put a string in html saying practice is done, you got x/10 correct
+
+        let playerScore = new ScoreString (newPlayer.fname, newPlayer.numCorrect, newPlayer.totalTIme)
+        console.log(playerScore.displayString);
+        scoreStringArray.push(playerScore.displayString);
+        console.log(scoreStringArray);
+
+        let scoreUpdateString = '';
+        scoreStringArray.forEach(element => scoreUpdateString += element + '<br>') ;
+        prevPlayer.innerHTML = scoreUpdateString;
+        console.log('previous player update is', scoreUpdateString);
+
         updateString += '<br> You can try again by pressing start over';
         currPlayer.innerHTML = updateString;
         //hide answer button
@@ -250,7 +319,7 @@ function nextProblem(event) {
     // console.log('new player is ', newPlayer);
 
     newPlayer.currAnswer = '';
-    newPlayer.correctAnswer = '';
+    newPlayer.correctAnswer ='';
     userAnswer.value = '';
     userAnswer.style.backgroundColor = 'white'
     updateString = 'GOOD LUCK';
@@ -297,3 +366,36 @@ function rangeToMax (range) {
             break;
     }
 };
+
+//
+function timesUp () {
+    // let answerButton2 = document.getElementById("answer-button");
+    clearInterval(timer);
+    answerButton.classList.add('hide');
+    // console.log(answerButton);
+    answerCheck();
+    // answerButton.click(answerCheck);
+    // answerButton2.click();
+    // timeLeft = ?
+    // hide answer input and show answer
+    console.log('times up');
+}
+
+function updateTimer () {
+    timeLeft = timeLeft - 1;
+    console.log('in update timer with, time left of : ', timeLeft);
+    if (timeLeft >= 0) {
+        let timerString = 'you have '+ timeLeft + ' left'
+        console.log(timerString);
+        currPlayer.innerHTML = (timerString);
+
+    } else {
+        timesUp();
+    }
+}
+
+function startTimer () {
+    timer = setInterval(updateTimer, 1000);
+    updateTimer();
+    console.log('starting timer with ', timeLeft, 'seconds');
+}
