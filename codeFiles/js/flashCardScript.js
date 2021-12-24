@@ -11,6 +11,7 @@ const answerBox = document.querySelector('#answer-box');
 var inCheckAnswer = false;
 var timer;
 var timeLeft;
+var playerTime= 0;
 
 //from w3schools trigger button on enter
 answerBox.addEventListener("keyup", function(event){
@@ -22,9 +23,13 @@ answerBox.addEventListener("keyup", function(event){
         console.log('in if');
         if (!inCheckAnswer) {
             answerCheck(event);
-        }
+        } else {
+            nextProblem(event);
+        };
     }
 }); 
+
+
 
 
 // buttons - above are grouped by location, but these interact with all areas and can't interrupt other actions
@@ -61,7 +66,7 @@ class Player {
         this.numAttempts = 0;
         this.currAnswer = '';
         this.correctAnswer = '';
-        this.totalTIme = 0;
+        this.totalTime = 0;
 
         switch (this.timePerProblem) {
             case "twoS":
@@ -133,10 +138,10 @@ function startPractice (event) {
     console.log(newPlayer);
     playerArray.push(newPlayer)
 
-    submitButton.classList.toggle('hide');
-    resetButton.classList.toggle('hide');
+    submitButton.classList.add('hide');
+    resetButton.classList.remove('hide');
     // answerButton.classList.toggle('hide');
-    answer.classList.toggle('hide');
+    answer.classList.add('hide');
     userAnswer.style.backgroundColor = 'white'
     userAnswer.style.color = 'black'
 
@@ -184,6 +189,24 @@ function startPractice (event) {
 
 }
 
+// startOver brings the state back to the orginal pre-submission state so that a new player can start (reset-button onclick)
+// 
+function startOver(event) {
+    playerTime = 0;    
+    inCheckAnswer = false;
+    event.preventDefault ();
+    console.log('starting over now');
+
+    fName.value='';
+    submitButton.classList.remove('hide');
+    resetButton.classList.add('hide');
+
+    answerBox.classList.remove('hide');
+
+    userAnswer.value = '';
+    userAnswer.style.backgroundColor = 'white'
+    updateString = 'GOOD LUCK';
+}
 
 
 // addition is called by startPractice
@@ -228,7 +251,9 @@ function addition (newPlayer) {
     secondInput.innerHTML = '+ ' + num2;
     answer.innerHTML = num1 + num2;
     newPlayer.correctAnswer = num1 + num2;
-    startTimer();
+    startTimer(newPlayer);
+    // answerBox.focus();
+    // answerBox.select();
     // wait for user input
 
     // check answer
@@ -283,14 +308,14 @@ function answerCheck (event) {
 
     if (newPlayer.numAttempts < 10) {
         //try again
-        inCheckAnswer = false;
         nextButton.classList.remove('hide');
     }
     else {
         //practice is done 
         // put a string in html saying practice is done, you got x/10 correct
+        newPlayer.totalTime = playerTime;
 
-        let playerScore = new ScoreString (newPlayer.fname, newPlayer.numCorrect, newPlayer.totalTIme)
+        let playerScore = new ScoreString (newPlayer.fname, newPlayer.numCorrect, newPlayer.totalTime)
         console.log(playerScore.displayString);
         scoreStringArray.push(playerScore.displayString);
         console.log(scoreStringArray);
@@ -305,7 +330,7 @@ function answerCheck (event) {
         //hide answer button
         answerButton.classList.add('hide');
         //hide answer box
-        answerBox.classList.toggle('hide');
+        answerBox.classList.add('hide');
         resetButton.style.backgroundColor = 'yellow'
 
     }
@@ -314,6 +339,7 @@ function answerCheck (event) {
 
 function nextProblem(event) {
     answerButton.classList.remove('hide');
+    inCheckAnswer = false;
     console.log('moving to the next problem');        
     let newPlayer = playerArray[playerArray.length-1];
     // console.log('new player is ', newPlayer);
@@ -382,20 +408,29 @@ function timesUp () {
 }
 
 function updateTimer () {
+    // console.log('in updatetimer and newplayer is ', newPlayer);
     timeLeft = timeLeft - 1;
     console.log('in update timer with, time left of : ', timeLeft);
     if (timeLeft >= 0) {
         let timerString = 'you have '+ timeLeft + ' left'
         console.log(timerString);
         currPlayer.innerHTML = (timerString);
+        // newPlayer.totalTime++;
+        console.log('updating player time')
+        playerTime++;
 
     } else {
         timesUp();
     }
 }
 
-function startTimer () {
+function startTimer (newPlayer) {
     timer = setInterval(updateTimer, 1000);
+    // console.log('time is , ', newPlayer.totalTime, ' before number()');
+    // console.log(typeof newPlayer.totalTime)
+    // newPlayer.totalTime++;
+    // playerTime++;
+    // console.log('time is', newPlayer.totalTime);
+    console.log('starting tim?er with ', timeLeft, 'seconds');
     updateTimer();
-    console.log('starting timer with ', timeLeft, 'seconds');
 }
