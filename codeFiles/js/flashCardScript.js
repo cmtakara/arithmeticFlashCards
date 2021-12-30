@@ -127,6 +127,7 @@ function startPractice (event) {
     event.preventDefault ();
     console.log('starting practice now');
     // console.log(fName.value, operation.value, numRange.value, timePerProblem.value);
+    answerBox.classList.remove('hide');
 
     var currName = fName.value;
     if (currName === '') {
@@ -201,7 +202,7 @@ function startOver(event) {
     submitButton.classList.remove('hide');
     resetButton.classList.add('hide');
 
-    answerBox.classList.remove('hide');
+    // answerBox.classList.remove('hide');
 
     userAnswer.value = '';
     userAnswer.style.backgroundColor = 'white'
