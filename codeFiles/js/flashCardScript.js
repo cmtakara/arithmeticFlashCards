@@ -166,15 +166,21 @@ function startPractice (event) {
             break;
         case "subtraction":
             // console.log('in subtraction, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
-            currPlayer.innerHTML = 'Sorry, this isn"t working yet';    
+            // currPlayer.innerHTML = 'Sorry, this isn"t working yet';    
+            currPlayer.innerHTML = playerString;
+            subtraction(newPlayer);
             break;
         case "multiplication":
             // console.log('in multiplication, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
-            currPlayer.innerHTML = 'Sorry, this isn"t working yet';    
+            // currPlayer.innerHTML = 'Sorry, this isn"t working yet';   
+            currPlayer.innerHTML = playerString;
+            multiplication(newPlayer); 
             break;
         case "division":
             // console.log('in division, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
-            currPlayer.innerHTML = 'Sorry, this isn"t working yet';    
+            // currPlayer.innerHTML = 'Sorry, this isn"t working yet';    
+            currPlayer.innerHTML = playerString;
+            division(newPlayer);
             break;
         case "fraction":
             // console.log('in fractions, name, range, and time are: ', currName, numRange.value, timePerProblem.value)
@@ -260,6 +266,184 @@ function addition (newPlayer) {
     // check answer
 
 };
+
+/////
+/////
+/////
+
+// subtraction is called by startPractice
+// subtraction calculates the minuend, the subtrahend, and difference, displays the numbers, finds the answer and get an input from the user
+// it calls functions to return the max value with a parameter of the range string
+
+function subtraction (newPlayer) {
+    // initially, this is done without the time constraints.
+        let range = newPlayer.numRange;
+        let times = newPlayer.timePerProblem;    
+    
+        //hide the answer text div and show the answer input div
+        // answer.classList.toggle('hide');
+        // calculate addends (integers in range)
+        let max = rangeToMax(range);
+    
+        // This is one problem, add a loop to have 10
+        let num1 = Math.floor(Math.random()*(max+1));
+        let num2;
+        if (max < 99) {
+            num2 = Math.floor(Math.random()*(max+1));
+        } else {
+            // if max is 99, want there to be no carry, so sum of each set of digits is at most 9
+            let tens = Math.floor(num1/10);
+            let ones = num1%10;
+            console.log('tens is ', tens, ' and ones is ', ones)
+            let tensMax = 9-tens;
+            let onesMax = 9-ones;
+            let tens2 = Math.floor(Math.random()*(tensMax+1));
+            let ones2 = Math.floor(Math.random()*(onesMax+1));
+            num2 = tens2*10 + ones2;
+        }
+        // in this function, different from addition, num2 is actually the answer and num1+num2 is the top number, the minuend
+
+        // find answer
+    
+        // display addends
+        timeLeft = Number(newPlayer.timePerProblem); 
+        console.log(newPlayer.timePerProblem);
+    
+        console.log(timeLeft);
+        firstInput.innerHTML = num1 + num2;
+        secondInput.innerHTML = '- ' + num1;
+        answer.innerHTML = num2;
+        newPlayer.correctAnswer = num2;
+        startTimer(newPlayer);
+        // answerBox.focus();
+        // answerBox.select();
+        // wait for user input
+    
+        // check answer
+    
+    };
+    
+
+/////
+/////
+/////
+
+
+// multiplication is called by startPractice
+// multiplication calculate multiplicands, display the numbers, find the answer and get an input from the user
+// it calls functions to return the max value with a parameter of the range string
+
+function multiplication (newPlayer) {
+    // initially, this is done without the time constraints.
+        let range = newPlayer.numRange;
+        let times = newPlayer.timePerProblem;    
+    
+        //hide the answer text div and show the answer input div
+        // answer.classList.toggle('hide');
+        // calculate addends (integers in range)
+        let max = rangeToMax(range);
+    
+        // This is one problem, add a loop to have 10
+        let num1 = Math.floor(Math.random()*(max+1));
+        let num2 = Math.floor(Math.random()*(max+1));
+
+        // the same logic won't apply to multiplication and division
+        // if (max < 99) {
+        //     num2 = Math.floor(Math.random()*(max+1));
+        // } else {
+        //     // if max is 99, want there to be no carry, so sum of each set of digits is at most 9
+        //     let tens = Math.floor(num1/10);
+        //     let ones = num1%10;
+        //     console.log('tens is ', tens, ' and ones is ', ones)
+        //     let tensMax = 9-tens;
+        //     let onesMax = 9-ones;
+        //     let tens2 = Math.floor(Math.random()*(tensMax+1));
+        //     let ones2 = Math.floor(Math.random()*(onesMax+1));
+        //     num2 = tens2*10 + ones2;
+        // }
+    
+        // find answer
+    
+        // display addends
+        timeLeft = Number(newPlayer.timePerProblem); 
+        console.log(newPlayer.timePerProblem);
+    
+        console.log(timeLeft);
+        firstInput.innerHTML = num1;
+        secondInput.innerHTML = 'x ' + num2;
+        answer.innerHTML = num1 * num2;
+        newPlayer.correctAnswer = num1 * num2;
+        startTimer(newPlayer);
+        // answerBox.focus();
+        // answerBox.select();
+        // wait for user input
+    
+        // check answer
+    
+    };
+
+    /////
+    /////
+    /////
+
+// division is called by startPractice
+// division calculates the divident, the divisor, and quotient, displays the numbers, finds the answer and get an input from the user
+// it calls functions to return the max value with a parameter of the range string
+
+function division (newPlayer) {
+    // initially, this is done without the time constraints.
+        let range = newPlayer.numRange;
+        let times = newPlayer.timePerProblem;    
+    
+        //hide the answer text div and show the answer input div
+        // answer.classList.toggle('hide');
+        // calculate addends (integers in range)
+        let max = rangeToMax(range);
+    
+        // This is one problem, add a loop to have 10
+        let num1 = Math.floor(Math.random()*(max))+1;
+        let num2 = Math.floor(Math.random()*(max))+1;
+        // if (max < 99) {
+        //     num2 = Math.floor(Math.random()*(max+1));
+        // } else {
+        //     // if max is 99, want there to be no carry, so sum of each set of digits is at most 9
+        //     let tens = Math.floor(num1/10);
+        //     let ones = num1%10;
+        //     console.log('tens is ', tens, ' and ones is ', ones)
+        //     let tensMax = 9-tens;
+        //     let onesMax = 9-ones;
+        //     let tens2 = Math.floor(Math.random()*(tensMax+1));
+        //     let ones2 = Math.floor(Math.random()*(onesMax+1));
+        //     num2 = tens2*10 + ones2;
+        // }
+        // in this function, different from addition, num2 is actually the answer and num1+num2 is the top number, the minuend
+
+        // find answer
+    
+        // display addends
+        timeLeft = Number(newPlayer.timePerProblem); 
+        console.log(newPlayer.timePerProblem);
+    
+        console.log(timeLeft);
+        firstInput.innerHTML = num1 * num2;
+        secondInput.innerHTML = '/ ' + num1;
+        answer.innerHTML = num2;
+        newPlayer.correctAnswer = num2;
+        startTimer(newPlayer);
+        // answerBox.focus();
+        // answerBox.select();
+        // wait for user input
+    
+        // check answer
+    
+    };
+    
+
+/////
+/////
+/////
+
+
 
 
 // answerCheck executes on user action (checkAnswer button onclick)
