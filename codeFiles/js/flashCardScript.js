@@ -15,12 +15,12 @@ var playerTime= 0;
 
 //from w3schools trigger button on enter
 answerBox.addEventListener("keyup", function(event){
-    console.log('in event listener')
-    console.log('keycode is: ', event.keyCode)
+    // console.log('in event listener')
+    // console.log('keycode is: ', event.keyCode)
     //number 13 is enter
     if (event.keyCode === 13) {
         event.preventDefault();
-        console.log('in if');
+        // console.log('in if');
         if (!inCheckAnswer) {
             answerCheck(event);
         } else {
@@ -51,13 +51,23 @@ const userAnswer = document.querySelector('#user-answer');
 //player array
 const playerArray = [];
 const scoreStringArray = [];
+// NEW CODE 
+console.log('scoreStringArray is: ', scoreStringArray);
+let savedScores = localStorage.getItem("savedScores");
+if (savedScores) {
+    console.log('in if and savedScores is: ', savedScores);
+    let tempScoreStringArray = JSON.parse(savedScores);
+    scoreStringArray.push(...tempScoreStringArray);
+}
+console.log('scoreStringArray is NOW: ', scoreStringArray);
+
 
 // creating an object that can hold the game information 
 // *** Needs to be updated and update the startPractice accordingly
 class Player {
     // from user inputs
     constructor (fname, operation, numRange, timePerProblem) {
-        console.log('in Player constructor');
+        // console.log('in Player constructor');
         this.fname = fname;
         this.operation = operation;
         this.numRange = numRange;
@@ -125,7 +135,7 @@ class ScoreString {
 function startPractice (event) {
     inCheckAnswer = false;
     event.preventDefault ();
-    console.log('starting practice now');
+    // console.log('starting practice now');
     // console.log(fName.value, operation.value, numRange.value, timePerProblem.value);
     answerBox.classList.remove('hide');
 
@@ -136,7 +146,7 @@ function startPractice (event) {
     }
 
     const newPlayer = new Player(currName, operation.value, numRange.value, timePerProblem.value);
-    console.log(newPlayer);
+    // console.log(newPlayer);
     playerArray.push(newPlayer)
 
     submitButton.classList.add('hide');
@@ -202,7 +212,7 @@ function startOver(event) {
     playerTime = 0;    
     inCheckAnswer = false;
     event.preventDefault ();
-    console.log('starting over now');
+    // console.log('starting over now');
 
     fName.value='';
     submitButton.classList.remove('hide');
@@ -239,7 +249,7 @@ function addition (newPlayer) {
         // if max is 99, want there to be no carry, so sum of each set of digits is at most 9
         let tens = Math.floor(num1/10);
         let ones = num1%10;
-        console.log('tens is ', tens, ' and ones is ', ones)
+        // console.log('tens is ', tens, ' and ones is ', ones)
         let tensMax = 9-tens;
         let onesMax = 9-ones;
         let tens2 = Math.floor(Math.random()*(tensMax+1));
@@ -251,9 +261,9 @@ function addition (newPlayer) {
 
     // display addends
     timeLeft = Number(newPlayer.timePerProblem); 
-    console.log(newPlayer.timePerProblem);
+    // console.log(newPlayer.timePerProblem);
 
-    console.log(timeLeft);
+    // console.log(timeLeft);
     firstInput.innerHTML = num1;
     secondInput.innerHTML = '+ ' + num2;
     answer.innerHTML = num1 + num2;
@@ -294,7 +304,7 @@ function subtraction (newPlayer) {
             // if max is 99, want there to be no carry, so sum of each set of digits is at most 9
             let tens = Math.floor(num1/10);
             let ones = num1%10;
-            console.log('tens is ', tens, ' and ones is ', ones)
+            // console.log('tens is ', tens, ' and ones is ', ones)
             let tensMax = 9-tens;
             let onesMax = 9-ones;
             let tens2 = Math.floor(Math.random()*(tensMax+1));
@@ -307,9 +317,9 @@ function subtraction (newPlayer) {
     
         // display addends
         timeLeft = Number(newPlayer.timePerProblem); 
-        console.log(newPlayer.timePerProblem);
+        // console.log(newPlayer.timePerProblem);
     
-        console.log(timeLeft);
+        // console.log(timeLeft);
         firstInput.innerHTML = num1 + num2;
         secondInput.innerHTML = '- ' + num1;
         answer.innerHTML = num2;
@@ -366,9 +376,9 @@ function multiplication (newPlayer) {
     
         // display addends
         timeLeft = Number(newPlayer.timePerProblem); 
-        console.log(newPlayer.timePerProblem);
+        // console.log(newPlayer.timePerProblem);
     
-        console.log(timeLeft);
+        // console.log(timeLeft);
         firstInput.innerHTML = num1;
         secondInput.innerHTML = 'x ' + num2;
         answer.innerHTML = num1 * num2;
@@ -422,9 +432,9 @@ function division (newPlayer) {
     
         // display addends
         timeLeft = Number(newPlayer.timePerProblem); 
-        console.log(newPlayer.timePerProblem);
+        // console.log(newPlayer.timePerProblem);
     
-        console.log(timeLeft);
+        // console.log(timeLeft);
         firstInput.innerHTML = num1 * num2;
         secondInput.innerHTML = '/ ' + num1;
         answer.innerHTML = num2;
@@ -449,12 +459,12 @@ function division (newPlayer) {
 // answerCheck executes on user action (checkAnswer button onclick)
 // it calls ...
 function answerCheck (event) {
-    console.log('in answerCheck');
+    // console.log('in answerCheck');
     clearInterval(timer);
     inCheckAnswer = true;
     answerButton.classList.add('hide');
     if (typeof event !== 'undefined') { event.preventDefault ()};
-    console.log('checking answer now');
+    // console.log('checking answer now');
     // console.log(playerArray.length);
     // console.log('player array [0]', playerArray[0]);
     // console.log('player array ', playerArray);
@@ -462,11 +472,11 @@ function answerCheck (event) {
     let newPlayer = playerArray[playerArray.length-1];
     // console.log('new player is ', newPlayer);
     newPlayer.currAnswer = userAnswer.value;
-    console.log('newplayer current answer is: ', newPlayer.currAnswer);
+    // console.log('newplayer current answer is: ', newPlayer.currAnswer);
     // console.log('user answer is: ', userAnswer.value);
     correctAnswer = newPlayer.correctAnswer;
-    console.log('correct answer is: ', correctAnswer);
-    console.log('comparison of user answer and correct answer is: ', correctAnswer == newPlayer.currAnswer);
+    // console.log('correct answer is: ', correctAnswer);
+    // console.log('comparison of user answer and correct answer is: ', correctAnswer == newPlayer.currAnswer);
 
     if (correctAnswer == newPlayer.currAnswer) {
         //if the answer is correct, increment numCorrect      
@@ -501,9 +511,12 @@ function answerCheck (event) {
         newPlayer.totalTime = playerTime;
 
         let playerScore = new ScoreString (newPlayer.fname, newPlayer.numCorrect, newPlayer.totalTime)
-        console.log(playerScore.displayString);
+        // console.log(playerScore.displayString);
         scoreStringArray.push(playerScore.displayString);
-        console.log(scoreStringArray);
+        // console.log(scoreStringArray);
+        // NEW CODE
+        const scoreStringArrayJSON = JSON.stringify(scoreStringArray);
+        localStorage.setItem("savedScores", scoreStringArrayJSON);
 
         let scoreUpdateString = '';
         scoreStringArray.forEach(element => scoreUpdateString += element + '<br>') ;
@@ -525,7 +538,7 @@ function answerCheck (event) {
 function nextProblem(event) {
     answerButton.classList.remove('hide');
     inCheckAnswer = false;
-    console.log('moving to the next problem');        
+    // console.log('moving to the next problem');        
     let newPlayer = playerArray[playerArray.length-1];
     // console.log('new player is ', newPlayer);
 
@@ -537,7 +550,7 @@ function nextProblem(event) {
     currPlayer.innerHTML = updateString;
 
     //already checking if there are less than 10 attempts.  won't show next button if there are 10
-    console.log(newPlayer.operation);
+    // console.log(newPlayer.operation);
     //this allows you to call the function with the name of the string within the [] and () parameters
     window[newPlayer.operation](newPlayer);
     nextButton.classList.add('hide');
@@ -549,30 +562,30 @@ function nextProblem(event) {
 // ==========================================================================
 
 function rangeToMax (range) {
-    console.log('changing range to max');
+    // console.log('changing range to max');
     switch(range) {
         case 'toFive': 
-            console.log('max is 5');
+            // console.log('max is 5');
             return 5;
             break;
         case 'toNine': 
-            console.log('max is 9');
+            // console.log('max is 9');
             return 9;
             break;
         case 'toFifteen': 
-            console.log('max is 15');
+            // console.log('max is 15');
             return 15;
             break;
         case 'toTwenty': 
-            console.log('max is 20');
+            // console.log('max is 20');
             return 20;
             break;
         case 'twoDigit': 
-            console.log('max is 99');
+            // console.log('max is 99');
             return 99;
             break;
         default: 
-            console.log('in default, so make max 99');
+            // console.log('in default, so make max 99');
             return 99;
             break;
     }
@@ -589,19 +602,19 @@ function timesUp () {
     // answerButton2.click();
     // timeLeft = ?
     // hide answer input and show answer
-    console.log('times up');
+    // console.log('times up');
 }
 
 function updateTimer () {
     // console.log('in updatetimer and newplayer is ', newPlayer);
     timeLeft = timeLeft - 1;
-    console.log('in update timer with, time left of : ', timeLeft);
+    // console.log('in update timer with, time left of : ', timeLeft);
     if (timeLeft >= 0) {
         let timerString = 'you have '+ timeLeft + ' left'
-        console.log(timerString);
+        // console.log(timerString);
         currPlayer.innerHTML = (timerString);
         // newPlayer.totalTime++;
-        console.log('updating player time')
+        // console.log('updating player time')
         playerTime++;
 
     } else {
@@ -616,6 +629,6 @@ function startTimer (newPlayer) {
     // newPlayer.totalTime++;
     // playerTime++;
     // console.log('time is', newPlayer.totalTime);
-    console.log('starting tim?er with ', timeLeft, 'seconds');
+    // console.log('starting timer with ', timeLeft, 'seconds');
     updateTimer();
 }
