@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    background-color: #212F45;
+    font-family: 'Raleway', sans-serif;
+    color: whitesmoke;
+    /* border: black solid 1px; */
+}
+
+.image-container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+h1 {
+    font-size: 4em;;
+}
+
+img {
+    height: auto;
+    max-width: 100%;
+}
+
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 15%;
+    left: 20%;
+    /* transform: translate(-25%, -25%); */
+  }
